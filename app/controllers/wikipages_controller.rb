@@ -5,7 +5,8 @@ class WikipagesController < ApplicationController
   end
 
   def show
-    @wikipage = Wikipage.find(params[:id])
+    @wikipage = Wikipage.friendly.find(params[:id])
+    respond_with_article_or_redirect
   end
 
   def new
@@ -64,5 +65,15 @@ class WikipagesController < ApplicationController
     params.require(:user).permit(:id, :role)
   end
 
+  def respond_with_article_or_redirect
+  # If an old id or a numeric id was used to find the record, then
+  # the request path will not match the post_path, and we should do
+  # a 301 redirect that uses the current friendly id.
+  if request.path != article_path(@article)
+    return redirect_to @article, status: :moved_permanently
+  else
+    return respond_with @article
+  end
+end
 
 end
