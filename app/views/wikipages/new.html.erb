@@ -1,0 +1,27 @@
+<h1>New Wiki Page</h1>
+
+<div class="row">
+  <div class="col-md-4">
+    <p>Guidelines for wiki entries</p>
+    <ul>
+      <li>Search Blocipedia in case an article already exists on the subject</li>
+      <li>Practice editing already existing articles</li>
+      <li>Gather sources</li>
+      <li>Must have a unique title.</li>
+    </ul>
+
+    <p>Simple Markdown</p>
+    <ul>
+      <li> <i>Italics:</i> *asterisks* or _underscores_.</li>
+      <li> <b>Bold:</b> **two asterisks** or __two underscores__.</li>
+      <li> <strike>Strikethrough:</strike>~~two tildas~~ </li>
+      <li> Paragraph break: &lt;br> </li>
+    </ul>
+    <p><%= link_to "More Markdown Syntax", "http://five.squarespace.com/display/ShowHelp?section=Markdown", :target =>"_blank" %></p>
+
+  </div>
+  <div class="col-md-8">
+    <%= render partial: 'form', locals: { wikipage: @wikipage } %>
+
+  </div>
+</div>

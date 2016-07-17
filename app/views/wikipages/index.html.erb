@@ -1,0 +1,11 @@
+<h1>Wiki Pages</h1>
+
+<% Wikipage.all.each do  |wikipage| %>
+  <div class="media">
+    <div class="media-body">
+      <h4 class="media-heading">
+        <%= link_to wikipage.title, wikipage %>
+      </h4>
+    </div>
+  </div>
+<% end %>
