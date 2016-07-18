@@ -3,16 +3,19 @@ Rails.application.routes.draw do
 
     get 'about' => 'welcome#about'
 
-    root to: 'welcome#index'
 
 #get 'signup' => 'users#new'
 
 resources :wikipages
 
-resources :charges, only: [:new, :create]
+resources :charges, only: [:new, :create, :destroy]
+resources :collaborators, only: [:create, :destroy]
 
 #resources :users, only: [:new, :create]
-
+  authenticated :user do
+    root 'wikipages#index', as: :authenticated_root
+  end
+  root 'welcome#index'
 
 
 

@@ -15,30 +15,5 @@
       <%= render partial: 'form', locals: { wikipage: @wikipage } %>
     </div>
   </div>
-  
-  <div class="row">
-    <div class="col-md-10">
-      <h4>Simple Markdown:</h4>
-      <table>
-        <tr>
-          <td> <i>Italics</i> </td>
-          <td> *asterisks* or _underscores_ </td>
-        </tr>
-        <tr>
-          <td> <b>Bold</b> </td>
-          <td> **two asterisks** or __two underscores__ </td>
-        </tr>
-        <tr>
-          <td> Paragraph break  &nbsp; &nbsp;  &nbsp;</td>
-          <td> &lt;br> </td>
-        </tr>
-        <tr>
-          <td> A <%= link_to "link", "http://daringfireball.net/projects/markdown/syntax", :title => "link name", :target =>"_blank" %> example.</td>
-          <td> A [link](http://www.example.com/ "link name") example.</td>
-        </tr>
-      </table>
-    <br>
-      <p><%= link_to "Click here for the complete markdown reference.", "http://daringfireball.net/projects/markdown/syntax", :target =>"_blank" %></p>
 
-    </div>
   </div>

@@ -16,6 +16,7 @@ class UsersController < ApplicationController
   def show
     @user = User.friendly.find(params[:id])
     authorize @user
+    respond_with_article_or_redirect
   end
 
   def update

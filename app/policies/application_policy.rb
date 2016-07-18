@@ -8,7 +8,7 @@ class ApplicationPolicy
   end
 
   def index?
-    record.public? or user.premium? or user.admin?
+    false
   end
 
   def show?
@@ -16,27 +16,22 @@ class ApplicationPolicy
   end
 
   def create?
-#      user.present?
     false
   end
 
   def new?
-#    create?
-    false
+    create?
   end
 
   def update?
-#    user.present?
-    false
+    user.present?
   end
 
   def edit?
-#    user.present?
-    false
+    update?
   end
 
   def destroy?
-#    user.role == 'admin'
     false
   end
 

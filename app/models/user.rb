@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   extend FriendlyId
   friendly_id :username
 
+  before_save { self.role ||= :standard }
+
   has_many :wikipages, dependent: :delete_all
 
 
@@ -19,14 +21,21 @@ class User < ActiveRecord::Base
 
     validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
 
+    has_many :charges
+    has_many :wikipages
+    has_many :collaborators
+    has_many :wikipage_collaborations, through: :collaborators, source: :wikipage
+
+
+
 attr_accessor :login
 
 
-scope :public_wikipages, -> { where(private: false) }
+#scope :public_wikipages, -> { where(private: false) }
 # Returns User's Wikis
-scope :personal_wikipages, -> (user)  { where(user: user) }
+#scope :personal_wikipages, -> (user)  { where(user: user) }
 # Returns User's Collaborations
-scope :shared_wikipages, -> (user) { joins(:collaborations).where({ collaborations: { user: user } }) }
+#scope :shared_wikipages, -> (user) { joins(:collaborations).where({ collaborations: { user: user } }) }
 
 
 def self.find_for_database_authentication(warden_conditions)
@@ -51,13 +60,13 @@ def admin?
 end
 
 #check:
-def publicize_wikipagess_if_standard
-  if standard?
-    wikipages.each do |wikipage|
-      wikipage.public = true
-      wikipage.save
-    end
-  end
-end
+#def publicize_wikipagess_if_standard
+#  if standard?
+#    wikipages.each do |wikipage|
+#      wikipage.public = true
+#      wikipage.save
+#    end
+#  end
+#end
 #
 end

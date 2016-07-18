@@ -11,7 +11,6 @@
     </div>
   <% end %>
 
-
     <%= form_group_tag(wikipage.errors[:title]) do %>
       <div class="form-group">
       <%= f.label :title %>
@@ -22,24 +21,20 @@
       <%= f.label :body %>
       <%= f.text_area :body, rows: 8, class: 'form-control', placeholder: "Enter entry body" %>
     </div>
-
-
-<#% if current_user.role == 'admin' || current_user.role == 'premium' %>
-    <div class="form-group">
-      <%= f.label :public, class: 'checkbox' do %>
-      <%= f.check_box :public %> Public topic
+    <% if current_user.admin? || current_user.premium? %>
+      <div class="form-group">
+          <%= f.check_box :public %> Private Wikipage?
       <% end %>
-    </div>
-<#% end %>
-
-
-
-  <div class="form-group">
-    <%= f.submit "Save", class: 'btn btn-success' %>
-  </div>
+      </div>
+    <p><%= f.submit "Save", class: 'btn btn-success' %></p>
+    <% if current_user.admin? || current_user.premium? %>
+      <div class="form-group">
+      <p><%= link_to "Delete Wiki", @wikipage, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure you want to delete this wiki?'} %></p>
+    <%end%>
+      </div>
   <% end %>
 </div>
-
+</div>
 
     <h4>Simple Markdown:</h4>
     <table>
@@ -62,3 +57,4 @@
   </table>
   <br>
     <p><%= link_to "Click here for the complete markdown reference.", "http://daringfireball.net/projects/markdown/syntax", :target =>"_blank" %></p>
+<br>

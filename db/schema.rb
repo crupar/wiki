@@ -11,7 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160717225644) do
+ActiveRecord::Schema.define(version: 20160718174349) do
+
+  create_table "charges", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "amount"
+    t.string   "stripe_charge_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "charges", ["user_id"], name: "index_charges_on_user_id"
+
+  create_table "collaborators", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "wikipage_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "collaborators", ["user_id"], name: "index_collaborators_on_user_id"
+  add_index "collaborators", ["wikipage_id"], name: "index_collaborators_on_wikipage_id"
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
@@ -51,7 +71,7 @@ ActiveRecord::Schema.define(version: 20160717225644) do
   create_table "wikipages", force: :cascade do |t|
     t.string   "title"
     t.text     "body"
-    t.boolean  "public",     default: false
+    t.boolean  "public",     default: true
     t.string   "slug"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
