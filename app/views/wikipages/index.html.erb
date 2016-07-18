@@ -1,11 +1,25 @@
-<h1>Wiki Pages</h1>
+<h1>Wiki Entries</h1>
 
-<% Wikipage.all.each do  |wikipage| %>
-  <div class="media">
-    <div class="media-body">
-      <h4 class="media-heading">
-        <%= link_to wikipage.title, wikipage %>
-      </h4>
+
+
+<div class="row">
+  <div class="col-md-8"
+    <% Wikipage.all.each do |wikipage| %>
+      <div class="media">
+        <div class="media-body">
+          <h4 class="media-heading">
+            <%= link_to wikipage.title.split.map(&:capitalize).join(' '), wikipage %>
+          </h4>
+          <% end %>
+        </div>
+      </div>
     </div>
+
+
+  <div class="col-md-4">
+    <% if policy(Wikipage.new).create? %>
+    <%= link_to "Create A New Wiki", new_wikipage_path, class: 'btn btn-lg btn-success center-block' %>
+    <% end %>
   </div>
-<% end %>
+
+</div>

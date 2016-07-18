@@ -22,6 +22,18 @@
       <%= f.label :body %>
       <%= f.text_area :body, rows: 8, class: 'form-control', placeholder: "Enter entry body" %>
     </div>
+
+<!--
+Public vs. not public???
+    <%# if user_is_? %>
+        <div class="form-group">
+          <%#= f.label :public, class: 'checkbox' do %>
+          <%#= f.check_box :public %> Public topic
+        <%# end %>
+        </div>
+    <%# end %>
+-->
+
   <div class="form-group">
     <%= f.submit "Save", class: 'btn btn-success' %>
   </div>

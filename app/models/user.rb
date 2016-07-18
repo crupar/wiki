@@ -1,9 +1,13 @@
 class User < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :username
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 #  has_secure_password
+
 
   has_many :wikipages
 
@@ -27,15 +31,16 @@ def self.find_for_database_authentication(warden_conditions)
 end
 
 def standard?
-  self.role == 'standard'
+  role == 'standard'
 end
 
 def premium?
-  self.role == 'premium'
+  role == 'premium'
 end
 
 def admin?
-  self.role == 'admin'
+  role == 'admin'
 end
+
 
 end

@@ -1,12 +1,23 @@
 class WikipagesController < ApplicationController
+  include Pundit
+
+rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+after_action :verify_authorized, only: [:destroy]
 
   def index
-    @wikipages = Wikipage.all
+    @wikipages = User.friendly.select("role")
+  #  authorize @wikipages
+
   end
 
   def show
     @wikipage = Wikipage.friendly.find(params[:id])
-    respond_with_article_or_redirect
+    authorize @wikipage
+    unless @wikipage.public || current_user
+      flash[:alert] = "You must be a premium user to view private topics."
+      redirect_to @wikipage
+    end
   end
 
   def new
@@ -14,8 +25,9 @@ class WikipagesController < ApplicationController
   end
 
   def create
+    authorize @wikipage
      @wikipage = Wikipage.new(wikipage_params)
-     @wikipage.user_id = current_user_id
+     @wikipage.user = current_user
 
      if @wikipage.save
        flash[:notice] = "Entry was saved successfully."
@@ -27,11 +39,13 @@ class WikipagesController < ApplicationController
    end
 
   def edit
-    @wikipage = Wikipage.find(params[:id])
+    @wikipage = Wikipage.friendly.find(params[:id])
   end
 
   def update
-    @wikipage = Wikipage.find(params[:id])
+    @wikipage = Wikipage.friendly.find(params[:id])
+    authorize @wikipage
+
     @wikipage.assign_attributes(wikipage_params)
 
     if @wikipage.save
@@ -44,11 +58,12 @@ class WikipagesController < ApplicationController
   end
 
   def destroy
-    @wikipage = Wikipage.find(params[:id])
+    @wikipage = Wikipage.friendly.find(params[:id])
+    authorize @wikipage
 
     if @wikipage.destroy
       flash[:notice] = "\"#{@wikipage.title}\" was deleted successfully."
-      redirect_to wikipages_path
+      redirect_to action: :index
     else
       flash.now[:alert] = "There was an error deleting the wiki entry."
       render :show
@@ -65,15 +80,11 @@ class WikipagesController < ApplicationController
     params.require(:user).permit(:id, :role)
   end
 
-  def respond_with_article_or_redirect
-  # If an old id or a numeric id was used to find the record, then
-  # the request path will not match the post_path, and we should do
-  # a 301 redirect that uses the current friendly id.
-  if request.path != article_path(@article)
-    return redirect_to @article, status: :moved_permanently
-  else
-    return respond_with @article
+
+  def user_not_authorized
+    flash[:warning] = "You are not authorized to perform this action."
+    redirect_to(request.referrer || root_path)
   end
-end
+
 
 end

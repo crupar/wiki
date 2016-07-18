@@ -26,7 +26,7 @@ wikipages = Wikipage.all
 
 
 User.create!(
-  username: "admin",
+  username: "carolynadmin",
   email: "admin@admin.com",
   password: "123456",
   role: "admin"
@@ -34,14 +34,14 @@ User.create!(
 
 
 User.create!(
-    username:   "standard",
+    username:   "carolynstandard",
     email:      "standard@standard.com",
     password:   "helloworld",
     role:       "standard"
 )
 
 User.create!(
-    username:   "premium",
+    username:   "carolynpremium",
     email:      "premium@premium.com",
     password:   'helloworld',
     role:       'premium'
