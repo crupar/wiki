@@ -23,7 +23,7 @@
     </div>
     <% if current_user.admin? || current_user.premium? %>
       <div class="form-group">
-          <%= f.check_box :public %> Private Wikipage?
+          <%= f.check_box :public %> Make Private?
       <% end %>
       </div>
     <p><%= f.submit "Save", class: 'btn btn-success' %></p>

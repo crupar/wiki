@@ -6,14 +6,14 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   def index
     wikipages = Wikipage.all
     @wikipages = FilterWikis.call(current_user, wikipages)
-  #  username = Username.all
+  # username = Username.all
   end
 
   def show
     @wikipage = Wikipage.friendly.find(params[:id])
     @collaborators = @wikipage.collaborating_users
 
-    unless !@wikipage.public || current_user
+    unless @wikipage.public == false || current_user
       flash[:alert] = "You must be a premium user to view private topics."
       redirect_to root_path
     end

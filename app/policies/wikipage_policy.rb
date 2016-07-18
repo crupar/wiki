@@ -4,14 +4,9 @@ class WikipagePolicy < ApplicationPolicy
     record
   end
 
-  def index?
-    record.public? or user.premium? or user.admin?
-  end
-
   def show?
-    @wikipages = Wikipage.all
     return true if record.public?
-    user.present? && (user.admin? || user.premium?)
+      user.present? && (user.admin? || user.premium?)
   end
 
   def update?
@@ -20,7 +15,7 @@ class WikipagePolicy < ApplicationPolicy
 
   def edit?
     @wikipages = Wikipage.all
-    
+
     return true if record.public?
     user.present? && (user.admin? || user.id == wikipage.user.id || user.premium? || FilterWikis.call(user, @wikipages))
   end

@@ -1,18 +1,16 @@
 class User < ActiveRecord::Base
+
   extend FriendlyId
   friendly_id :username
 
-  before_save { self.role ||= :standard }
-
-  has_many :wikipages, dependent: :delete_all
-
-
-  enum role: [:standard, :premium, :admin]
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-#  has_secure_password
+
+
+  before_save { self.role ||= :standard }
+  enum role: [:standard, :premium, :admin]
+
+
   validates :username,
     :presence => true,
     :uniqueness => {
@@ -30,14 +28,6 @@ class User < ActiveRecord::Base
 
 attr_accessor :login
 
-
-#scope :public_wikipages, -> { where(private: false) }
-# Returns User's Wikis
-#scope :personal_wikipages, -> (user)  { where(user: user) }
-# Returns User's Collaborations
-#scope :shared_wikipages, -> (user) { joins(:collaborations).where({ collaborations: { user: user } }) }
-
-
 def self.find_for_database_authentication(warden_conditions)
   conditions = warden_conditions.dup
   if login = conditions.delete(:login)
@@ -47,26 +37,6 @@ def self.find_for_database_authentication(warden_conditions)
   end
 end
 
-def standard?
-  role == 'standard'
-end
 
-def premium?
-  role == 'premium'
-end
 
-def admin?
-  role == 'admin'
-end
-
-#check:
-#def publicize_wikipagess_if_standard
-#  if standard?
-#    wikipages.each do |wikipage|
-#      wikipage.public = true
-#      wikipage.save
-#    end
-#  end
-#end
-#
 end

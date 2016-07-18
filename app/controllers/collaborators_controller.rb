@@ -1,5 +1,9 @@
 class CollaboratorsController < ApplicationController
-  
+
+
+  # username = Username.all
+
+
   def create
     @wikipage = Wikipage.find(params[:wikipage_id])
     user = User.find(params[:user_id])
@@ -23,4 +27,6 @@ class CollaboratorsController < ApplicationController
       render :edit
     end
   end
+
+
 end

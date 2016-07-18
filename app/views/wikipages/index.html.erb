@@ -10,7 +10,7 @@
           <h4 class="media-heading">
             <%= link_to wikipage.title.split.map(&:capitalize).join(' '), wikipage %>
           </h4>
-          <%= content_tag :span, 'Public', class: 'label label-primary' if wikipage.public? %>
+          <%= content_tag :span, 'Private', class: 'label label-primary' if wikipage.public? %>
           <% end %>
         </div>
       </div>
