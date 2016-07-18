@@ -9,6 +9,8 @@ class WikipagePolicy < ApplicationPolicy
       user.present? && (user.admin? || user.premium?)
   end
 
+
+
   def update?
     edit?
   end

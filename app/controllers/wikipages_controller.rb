@@ -5,13 +5,13 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     wikipages = Wikipage.all
-    @wikipages = FilterWikis.call(current_user, wikipages)
+    @wikipages = FilterWikis.call(current_user.role)
   # username = Username.all
   end
 
   def show
     @wikipage = Wikipage.friendly.find(params[:id])
-    @collaborators = @wikipage.collaborating_users
+    @collaborators = @wikipage.collaborator_users
 
     unless @wikipage.public == false || current_user
       flash[:alert] = "You must be a premium user to view private topics."
@@ -24,12 +24,11 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   end
 
   def create
-     @wikipage = Wikipage.new(wikipage_params)
-     @wikipage.user = current_user
+     @wikipage = current_user.wikipages.new(wikipage_params)
 
      if @wikipage.save
        flash[:notice] = "Entry was saved successfully."
-       redirect_to @wikipage, notice: ''
+       redirect_to @wikipage
      else
        flash.now[:alert] = "There was an error saving the entry. Please try again."
        render :new
@@ -39,12 +38,13 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def edit
     @wikipage = Wikipage.friendly.find(params[:id])
+    @users = User.where.not(id: current_user.id)
+
   end
 
   def update
     @wikipage = Wikipage.friendly.find(params[:id])
     @wikipage.assign_attributes(wikipage_params)
-    authorize @wikipage
 
     if @wikipage.save
       flash[:notice] = "Entry was updated successfully."
@@ -71,13 +71,19 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   private
 
   def wikipage_params
-    params.require(:wikipage).permit(:id, :title, :body, :public)
+    params.require(:wikipage).permit(:id, :title, :body, :public, user_ids: [])
+  end
+
+  def user_params
+    params.require(:user).permit(:id, :role)
   end
 
   def user_not_authorized
     flash[:warning] = "You are not authorized to perform this action."
     redirect_to(request.referrer || root_path)
   end
+
+
 
 
 end

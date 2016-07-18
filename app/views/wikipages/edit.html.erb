@@ -13,6 +13,19 @@
   <div class="col-md-8">
     <%= render partial: 'form', locals: { wikipage: @wikipage } %>
   </div>
+
+
+    <h4>Add collaborators </h4>
+    <% @users.each do |user| %>
+  <div class='listcolumns'>
+    <ul class='list-unstyled'>
+      <li><%= check_box_tag "wikipage[user_ids][]", user.id, @wikipage.collaborator_users.include?(user)  %>
+      <%= label_tag dom_id(user), user.username %></li>
+    </ul>
+      <% end %>
+  </div>
+
+
 </div>
 
 </div>

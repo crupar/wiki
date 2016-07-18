@@ -1,25 +1,29 @@
 class ChargesController < ApplicationController
 
   def create
+    @amount = 1500
+
+  # Creates a Stripe Customer object, for associating with the charge
     customer = Stripe::Customer.create(
       email: current_user.email,
       card: params[:stripeToken]
-    )
+      )
 
     charge = Stripe::Charge.create(
       customer: customer.id,
-      amount: 15_00,
+      amount: @amount,
       description: "Premium Membership - #{current_user.email}",
       currency: 'usd'
-    )
-    current_user.charges.create(
-      amount: charge.amount,
-      stripe_charge_id: charge.id
-    )
-    current_user.premium!
+      )
 
-    flash[:notice] = "#{current_user.email}, your account has been upgraded to Premium status"
-    redirect_to root_path
+    if current_user.update(role: 'premium')
+      flash[:success] = "Thank you for upgrading to Premium, #{current_user.email}!"
+      redirect_to edit_user_registration_path
+    else
+      flash[:error] = "There was an error upgrading your account."
+      redirect_to edit_user_registration_path
+    end
+
 
     rescue Stripe::CardError => e
       flash[:alert] = e.message
@@ -27,11 +31,7 @@ class ChargesController < ApplicationController
   end
 
   def new
-    @stripe_btn_data = {
-      key: "#{ Rails.configuration.stripe[:publishable_key] }",
-      description: "Premium Membership",
-      amount: 15_00
-    }
+
   end
 
   def destroy

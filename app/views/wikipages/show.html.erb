@@ -1,3 +1,10 @@
+
+<ol class="breadcrumb">
+  <li><%= link_to "Blocipedia", root_path %></li>
+  <li class="active"><%=@wikipage.title%></li>
+</ol>
+
+
 <h1><%= @wikipage.title.split.map(&:capitalize).join(' ') %></h1>
 
 <div class="row">

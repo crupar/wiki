@@ -21,8 +21,8 @@ class User < ActiveRecord::Base
 
     has_many :charges
     has_many :wikipages
-    has_many :collaborators
-    has_many :wikipage_collaborations, through: :collaborators, source: :wikipage
+    has_many :collaborations
+    has_many :wikipage_collaborations, through: :collaborations, source: :wikipage
 
 
 

@@ -28,7 +28,7 @@ class ApplicationPolicy
   end
 
   def edit?
-    update?
+    (record.user == user) || (record.collaborators.include?(user))
   end
 
   def destroy?

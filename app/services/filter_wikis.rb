@@ -1,14 +1,13 @@
 
 class FilterWikis
 
-  def self.call(user, wikipages)
-    case user
+  def self.call(role)
+    case role
     when 'standard'
-      Wikipages.where(public: true)
-    when 'premium'
-      wikipages.all
-    when 'admin'
-      wikipages.all
+      Wikipage.where(public: false)
+    when 'premium', 'admin'
+      Wikipage.all
     end
   end
+
 end

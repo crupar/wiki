@@ -6,7 +6,7 @@ friendly_id :title
 
 belongs_to :user
 has_many :collaborators
-has_many :collaborating_users, through: :collaborators, source: :user
+has_many :collaborator_users, through: :collaborators, source: :user
 
 validates :title,
           uniqueness: { case_sensitive: false },
