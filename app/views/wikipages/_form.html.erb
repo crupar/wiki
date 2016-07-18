@@ -11,7 +11,31 @@
       </div>
     <% end %>
 
+    <div class="row">
+    <div class="col-md-10">
+      <h4>Simple Markdown:</h4>
+      <table>
+        <tr>
+          <td> <i>Italics</i> </td>
+          <td> *asterisks* or _underscores_ </td>
+        </tr>
+        <tr>
+          <td> <b>Bold</b> </td>
+          <td> **two asterisks** or __two underscores__ </td>
+        </tr>
+        <tr>
+          <td> Paragraph break  &nbsp; &nbsp;  &nbsp;</td>
+          <td> &lt;br> </td>
+        </tr>
+        <tr>
+          <td> A <%= link_to "link", "http://daringfireball.net/projects/markdown/syntax", :title => "link name", :target =>"_blank" %> example.</td>
+          <td> A [link](http://www.example.com/ "link name") example.</td>
+        </tr>
+    </table>
+    <br>
+      <p><%= link_to "Click here for the complete markdown reference.", "http://daringfireball.net/projects/markdown/syntax", :target =>"_blank" %></p>
 
+    </div>
     <%= form_group_tag(wikipage.errors[:title]) do %>
       <div class="form-group">
       <%= f.label :title %>
@@ -23,18 +47,18 @@
       <%= f.text_area :body, rows: 8, class: 'form-control', placeholder: "Enter entry body" %>
     </div>
 
-<!--
-Public vs. not public???
-    <%# if user_is_? %>
-        <div class="form-group">
-          <%#= f.label :public, class: 'checkbox' do %>
-          <%#= f.check_box :public %> Public topic
-        <%# end %>
-        </div>
-    <%# end %>
--->
+
+<#% if current_user.role == 'admin' || current_user.role == 'premium' %>
+    <div class="form-group">
+      <%= f.label :public, class: 'checkbox' do %>
+      <%= f.check_box :public %> Public topic
+      <% end %>
+    </div>
+<#% end %>
+
+
 
   <div class="form-group">
     <%= f.submit "Save", class: 'btn btn-success' %>
   </div>
-<% end %>
+  <% end %>

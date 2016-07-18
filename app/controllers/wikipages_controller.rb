@@ -3,11 +3,13 @@ class WikipagesController < ApplicationController
 
 rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-after_action :verify_authorized, only: [:destroy]
-
   def index
-    @wikipages = User.friendly.select("role")
+#    @wikipages = User.friendly.select("role")
+
   #  authorize @wikipages
+
+  @wikipages = policy_scope(Wikipage)
+
 
   end
 
@@ -22,11 +24,13 @@ after_action :verify_authorized, only: [:destroy]
 
   def new
     @wikipage = Wikipage.new
+    authorize @wikipage
+
   end
 
   def create
-    authorize @wikipage
      @wikipage = Wikipage.new(wikipage_params)
+     authorize @wikipage
      @wikipage.user = current_user
 
      if @wikipage.save
@@ -61,9 +65,11 @@ after_action :verify_authorized, only: [:destroy]
     @wikipage = Wikipage.friendly.find(params[:id])
     authorize @wikipage
 
-    if @wikipage.destroy
-      flash[:notice] = "\"#{@wikipage.title}\" was deleted successfully."
+    if @wikipage.delete
       redirect_to action: :index
+
+      flash[:notice] = "\"#{@wikipage.title}\" was deleted successfully."
+      @wikipage.assign_attributes(wikipage_params)
     else
       flash.now[:alert] = "There was an error deleting the wiki entry."
       render :show
@@ -79,7 +85,6 @@ after_action :verify_authorized, only: [:destroy]
   def user_params
     params.require(:user).permit(:id, :role)
   end
-
 
   def user_not_authorized
     flash[:warning] = "You are not authorized to perform this action."

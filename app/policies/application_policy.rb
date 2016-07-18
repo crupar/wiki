@@ -8,32 +8,39 @@ class ApplicationPolicy
   end
 
   def index?
-    false
+    return true unless record.private?
+    if record.private?
+      return false unless user.premium? || user.admin?
+    end
   end
 
   def show?
-    user.present?
+    scope.where(:id => record.id).exists?
   end
 
   def create?
-    user.present?
+#      user.present?
+    false
   end
 
   def new?
-    create?
+#    create?
+    false
   end
 
   def update?
-    user.present?
+#    user.present?
+    false
   end
 
   def edit?
-    user.present?
+#    user.present?
+    false
   end
 
-
-  def scope
-    record.class
+  def destroy?
+#    user.role == 'admin'
+    false
   end
 
 

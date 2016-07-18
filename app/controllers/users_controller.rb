@@ -1,10 +1,12 @@
 class UsersController < ApplicationController
+  include Pundit
+
   before_filter :authenticate_user!
   after_action :verify_authorized, except: [:welcome]
 
   def index
     @users = User.all
-    authorize User
+    authorize @user
   end
 
   def show
@@ -44,6 +46,18 @@ class UsersController < ApplicationController
   def new
     @user = User.new
   end
+
+#Check if this works:
+  def upgrade
+    current_user.update_attributes(role: 'premium')
+    redirect_to edit_user_registration_path
+  end
+
+  def downgrade
+    current_user.update_attributes(role: 'standard')
+    redirect_to edit_user_registration_path
+  end
+
 
 
   private

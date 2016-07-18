@@ -1,31 +1,65 @@
 class WikipagePolicy < ApplicationPolicy
+
+  def index?
+    return true unless record.private?
+    if record.private?
+      return false unless user.premium? || user.admin?
+    end
+end
+
+def show?
+  return true unless record.private?
+  user.present? && (user.admin? || user.premium?)
+end
+
+  def create?
+    return user.present?
+    if record.private?
+      user.present? && (user.admin? || user.premium?)
+    end
+    end
+
+  def new?
+    show?
+  end
+
+  def update?
+    return false unless user.present?
+    if record.private?
+      return false unless user.premium? || user.admin? || record.user == user
+    end
+    user.admin? || record.user == user
+  end
+
+
+  def edit?
+    show?
+  end
+
+  def destroy?
+    user.admin?
+  end
+
+
+
+
+
+
   class Scope
-      attr_reader :user, :scope # :wiki,
 
-      def initialize(user, scope) # wiki,
-        @user = user
-        @scope = scope
+    attr_reader :user, :scope
+
+    def initialize(user, scope)
+      @user = user
+      @scope = scope
+    end
+
+    def resolve
+      if user.admin?
+        scope.all
+      else
+    #    (scope.private_wikipages + scope.shared_wikipages(user) + scope.personal_wikipages(user)).uniq
       end
-
-      def resolve
-         wikis = []
-         if user.role == 'admin'
-           wikis = scope.all # if the user is an admin, show them all the wikis
-         elsif user.role == 'premium'
-           all_wikis = scope.all
-           all_wikis.each do |wiki|
-             if wiki && wiki.user == user
-               wikis << wiki
-             end
-           end
-         else # this is the  standard user
-           all_wikis = scope.all
-           wikis = scope.all
-         end
-         wikis # return the wikis array we've built up
-       end
-     end
-
-
-
+    end
+  end
 end
