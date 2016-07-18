@@ -4,6 +4,10 @@ class UsersController < ApplicationController
   before_filter :authenticate_user!
   after_action :verify_authorized, except: [:welcome]
 
+  def new
+    @user = User.new
+  end
+
   def index
     @users = User.all
     authorize @user
@@ -12,7 +16,6 @@ class UsersController < ApplicationController
   def show
     @user = User.friendly.find(params[:id])
     authorize @user
-    respond_with_article_or_redirect
   end
 
   def update
@@ -43,20 +46,6 @@ class UsersController < ApplicationController
     redirect_to edit_user_registration_path
   end
 
-  def new
-    @user = User.new
-  end
-
-#Check if this works:
-  def upgrade
-    current_user.update_attributes(role: 'premium')
-    redirect_to edit_user_registration_path
-  end
-
-  def downgrade
-    current_user.update_attributes(role: 'standard')
-    redirect_to edit_user_registration_path
-  end
 
 
 

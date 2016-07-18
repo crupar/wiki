@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
 resources :wikipages
 
+resources :charges, only: [:new, :create]
 
 #resources :users, only: [:new, :create]
 

@@ -33,6 +33,8 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
      authorize @wikipage
      @wikipage.user = current_user
 
+     @wikipage.assign_attributes(wikipage_params)
+
      if @wikipage.save
        flash[:notice] = "Entry was saved successfully."
        redirect_to [@wikipage]

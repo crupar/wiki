@@ -2,40 +2,16 @@
 
   <% if wikipage.errors.any? %>
     <div class ="alert alert-danger">
-        <h4><%= pluralize(wikipage.errors.count, "error") %>.</h4>
+      <h4><%= pluralize(wikipage.errors.count, "error") %>.</h4>
         <ul>
-          <% wikipage.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
+            <% wikipage.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
           <% end %>
         </ul>
-      </div>
-    <% end %>
-
-    <div class="row">
-    <div class="col-md-10">
-      <h4>Simple Markdown:</h4>
-      <table>
-        <tr>
-          <td> <i>Italics</i> </td>
-          <td> *asterisks* or _underscores_ </td>
-        </tr>
-        <tr>
-          <td> <b>Bold</b> </td>
-          <td> **two asterisks** or __two underscores__ </td>
-        </tr>
-        <tr>
-          <td> Paragraph break  &nbsp; &nbsp;  &nbsp;</td>
-          <td> &lt;br> </td>
-        </tr>
-        <tr>
-          <td> A <%= link_to "link", "http://daringfireball.net/projects/markdown/syntax", :title => "link name", :target =>"_blank" %> example.</td>
-          <td> A [link](http://www.example.com/ "link name") example.</td>
-        </tr>
-    </table>
-    <br>
-      <p><%= link_to "Click here for the complete markdown reference.", "http://daringfireball.net/projects/markdown/syntax", :target =>"_blank" %></p>
-
     </div>
+  <% end %>
+
+
     <%= form_group_tag(wikipage.errors[:title]) do %>
       <div class="form-group">
       <%= f.label :title %>
@@ -62,3 +38,27 @@
     <%= f.submit "Save", class: 'btn btn-success' %>
   </div>
   <% end %>
+</div>
+
+
+    <h4>Simple Markdown:</h4>
+    <table>
+      <tr>
+        <td> <i>Italics</i> </td>
+        <td> *asterisks* or _underscores_ </td>
+      </tr>
+      <tr>
+        <td> <b>Bold</b> </td>
+        <td> **two asterisks** or __two underscores__ </td>
+      </tr>
+      <tr>
+        <td> Paragraph break  &nbsp; &nbsp;  &nbsp;</td>
+        <td> &lt;br> </td>
+      </tr>
+      <tr>
+        <td> A <%= link_to "link", "http://daringfireball.net/projects/markdown/syntax", :title => "link name", :target =>"_blank" %> example.</td>
+        <td> A [link](http://www.example.com/ "link name") example.</td>
+      </tr>
+  </table>
+  <br>
+    <p><%= link_to "Click here for the complete markdown reference.", "http://daringfireball.net/projects/markdown/syntax", :target =>"_blank" %></p>

@@ -1,31 +1,29 @@
 class WikipagePolicy < ApplicationPolicy
 
-  def index?
-    return true unless record.private?
-    if record.private?
-      return false unless user.premium? || user.admin?
-    end
+def index?
+  record.public? or user.premium? or user.admin?
 end
 
 def show?
-  return true unless record.private?
+  return true if record.public?
   user.present? && (user.admin? || user.premium?)
 end
 
-  def create?
-    return user.present?
-    if record.private?
-      user.present? && (user.admin? || user.premium?)
-    end
-    end
+def create?
+  return false unless user.present?
+  if record.public?
+    return false if user.premium? || user.admin? || record.user == user
+  end
+  user.admin? || record.user == user
+end
 
   def new?
-    show?
+    user.present?
   end
 
   def update?
     return false unless user.present?
-    if record.private?
+    if record.public?
       return false unless user.premium? || user.admin? || record.user == user
     end
     user.admin? || record.user == user
@@ -62,4 +60,6 @@ end
       end
     end
   end
+
+
 end

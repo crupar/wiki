@@ -8,10 +8,7 @@ class ApplicationPolicy
   end
 
   def index?
-    return true unless record.private?
-    if record.private?
-      return false unless user.premium? || user.admin?
-    end
+    record.public? or user.premium? or user.admin?
   end
 
   def show?
