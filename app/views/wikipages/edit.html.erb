@@ -15,17 +15,15 @@
   </div>
 
 
+  <% unless current_user.standard? %>
     <h4>Add collaborators </h4>
     <% @users.each do |user| %>
-  <div class='listcolumns'>
-    <ul class='list-unstyled'>
-      <li><%= check_box_tag "wikipage[user_ids][]", user.id, @wikipage.collaborator_users.include?(user)  %>
-      <%= label_tag dom_id(user), user.username %></li>
-    </ul>
-      <% end %>
-  </div>
+      <div id="pagination_table">
+        <%= check_box_tag "wikipage[user_ids][]", user.id, @wikipage.collaborator_users.include?(user) %>
+        <%= label_tag dom_id(user), user.username %></li>
+      </div>
+    <% end %>
+  <% end %>
 
-
-</div>
 
 </div>

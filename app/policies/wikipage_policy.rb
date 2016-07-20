@@ -16,10 +16,7 @@ class WikipagePolicy < ApplicationPolicy
   end
 
   def edit?
-    @wikipages = Wikipage.all
-
-    return true if record.public?
-    user.present? && (user.admin? || user.id == wikipage.user.id || user.premium? || FilterWikis.call(user, @wikipages))
+    (record.user -- user) || :record.collabarator.include?(user)
   end
 
   def destroy?

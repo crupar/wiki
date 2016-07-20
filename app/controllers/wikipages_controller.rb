@@ -4,19 +4,13 @@ class WikipagesController < ApplicationController
 rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    wikipages = Wikipage.all
     @wikipages = FilterWikis.call(current_user.role)
-  # username = Username.all
+    #@wikipages, @alphaParams = Wikipage.alpha_paginate(params[:letter]){|wikipage| wikipage.title}
   end
 
   def show
     @wikipage = Wikipage.friendly.find(params[:id])
-    @collaborators = @wikipage.collaborator_users
-
-    unless @wikipage.public == false || current_user
-      flash[:alert] = "You must be a premium user to view private topics."
-      redirect_to root_path
-    end
+    @collaborator = @wikipage.collaborator_users
   end
 
   def new
@@ -39,6 +33,7 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   def edit
     @wikipage = Wikipage.friendly.find(params[:id])
     @users = User.where.not(id: current_user.id)
+  #  @users, @alphaParams = User.all.alpha_paginate(params[:letter]){|user| user.username}
 
   end
 
@@ -75,7 +70,7 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   end
 
   def user_params
-    params.require(:user).permit(:id, :role)
+    params.require(:user).permit(:id, :role, :username)
   end
 
   def user_not_authorized

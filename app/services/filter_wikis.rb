@@ -5,9 +5,12 @@ class FilterWikis
     case role
     when 'standard'
       Wikipage.where(public: false)
-    when 'premium', 'admin'
+    when 'premium'
+      Wikipage.where(collaborator)
+    when 'admin'
       Wikipage.all
     end
   end
+
 
 end

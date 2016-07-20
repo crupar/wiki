@@ -9,6 +9,8 @@ gem 'autoprefixer-rails'
 #password encryption
 gem 'bcrypt'
 
+gem 'alphabetical_paginate'
+
 #
 gem 'pundit'
 
