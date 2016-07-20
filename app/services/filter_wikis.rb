@@ -6,7 +6,7 @@ class FilterWikis
     when 'standard'
       Wikipage.where(public: false)
     when 'premium'
-      Wikipage.where(collaborator)
+      Wikipage.where(Collaborator.exists?(:username))
     when 'admin'
       Wikipage.all
     end

@@ -10,6 +10,8 @@ resources :wikipages
 
 resources :charges, only: [:new, :create, :destroy]
 resources :collaborators, only: [:create, :destroy]
+resources :subscriptions
+
 
 #resources :users, only: [:new, :create]
   authenticated :user do

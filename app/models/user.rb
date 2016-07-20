@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
     validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
 
     has_many :charges
+    has_many :subscriptions
     has_many :wikipages
     has_many :collaborators
     has_many :wikipage_collaborators, through: :collaborators, source: :wikipage

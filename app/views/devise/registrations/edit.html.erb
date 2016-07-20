@@ -34,8 +34,12 @@
   </div>
 <% end %>
 
-<h3>Update my account</h3>
-<p>Want a premium account? <%= button_to "Update my account", charges_path %></p>
+<h3>Premium Account</h3>
+  <% if current_user.role == 'standard' %>
+        <p>Want a premium account? <%= button_to "Upgrade my account", subscriptions_path %></p>
+  <% else %>
+        <%= button_to "Update my account", subscriptions_path %></p>
+  <% end %>
 
 <h3>Cancel my account</h3>
 

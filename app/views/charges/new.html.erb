@@ -1,46 +1,40 @@
  <div class="row">
    <div class="col-md-12">
-     <h4>Sign up for a Premium Account!</h4>
-     <h5>Create Private Wikis Only Other Premium Users Can See</h5>
-     <p>For $15.00 a month you can create private wikis that only other premium users can see.</p>
 
      <% if current_user.role == 'standard' %>
-       <%= form_tag charges_path do %>
-         <h4>Upgrade Your Account to Premium Membership for 1 month (you have to do this every month in order to continue being a premium user)</h4>
-         <script src="https://checkout.stripe.com/checkout.js"
-                data-key="<%= @stripe_btn_data[:key] %>"
-                data-amount=<%= @stripe_btn_data[:amount] %>
-                data-description="<%= @stripe_btn_data[:description] %>" >
-        </script>
+
+         <%= form_tag subscriptions_path do %>
+           <h4>Sign up for a Premium Account!</h4>
+           <h5>Create Private Wikis Only Other Premium Users Can See</h5>
+           <p>For $15.00 a month you can create private wikis that only other premium users can see.</p>
+
+           <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                  data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+                  data-description="Blocipedia Premium Membership"
+                  data-amount="1500">
+          </script>
+
+<!-- If I decide to have two options?
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                  data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+                  data-description="Blocipedia Premium Subscription Membership"
+                  data-amount="1500">
+            </script>
+-->
+            <% end %>
 
 
-        <h4>Upgrade Your Account with a Premium Membership Subscription.  Every month $15 will automatically be charged to your credit card.</h4>
-         <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-                data-description="Blocipedia Premium Membership Subscription"
-                data-amount="1500">
-        </script>
+      <% else %>
 
-       <% end %>
-    <% end %>
-
-    
-     <% else %>
-       <p>You are a premium user</p>
-       <%= link_to 'Downgrade Account', charge_path(id:1), method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure you want to cancel your Premium membership? Doing so makes all your private wikis go public.'} %>
-     <% end %>
-   </div>
- </div>
-
- <div class="row">
-   <div class="col-md-12 mt-10">
-     <%= link_to "Back to Wikis", wikipages_path, class: 'btn btn-info' %>
-   </div>
- </div>
+          <p>You are a premium user</p>
+            <%= link_to 'Downgrade Account', charge_path(id:1), method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure you want to cancel your Premium membership? Doing so makes all your private wikis go public.'} %>
+      <% end %>
 
 
-    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-           data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-           data-description="Blocipedia Premium Membership"
-           data-amount="1500"></script>
-  <% end %>
+
+<br>
+      <div class="row">
+        <div class="col-md-12 mt-10">
+          <p><%= link_to "Back to Wikis", wikipages_path, class: 'btn btn' %></p>
+        </div>
+      </div>
