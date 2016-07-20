@@ -5,8 +5,7 @@ class WikipagePolicy < ApplicationPolicy
   end
 
   def show?
-    return true if record.public?
-      user.present? && (user.admin? || user.premium?)
+      (user.present? && (user.admin? || user.premium?)) && record.public?
   end
 
   def update?
@@ -14,7 +13,7 @@ class WikipagePolicy < ApplicationPolicy
   end
 
   def edit?
-    (record.user == user) || record.users.include?(user)
+    user.present? && (user.admin? || user.premium?)
   end
 
   def create?
@@ -27,7 +26,7 @@ class WikipagePolicy < ApplicationPolicy
 
   def destroy?
     user.admin?
-  end
+   end
 
 
 end

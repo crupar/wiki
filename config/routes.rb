@@ -15,10 +15,9 @@ resources :subscriptions
 
 #resources :users, only: [:new, :create]
   authenticated :user do
-    root 'wikipages#index', as: :authenticated_root
+    root 'welcome#index', as: :authenticated_root
   end
   root 'welcome#index'
-
 
 
 

@@ -1,6 +1,42 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-body {
-padding: 30px;
+.user-info {
+  margin-top: 9px;
+  display: inline-block;
+}
+
+.nav {
+  margin-top: 5px;
+}
+
+.avatar {
+  display: inline-block;
+  background-color: white;
+  border: 1px solid #d9d9d9;
+  border-radius: 30px;
+  height: 60px;
+  width: 60px;
+  overflow: hidden;
+  img { width: 100% }
+}
+
+
+.avatar2 {
+  float: 50%;
+  background-color: white;
+  border: 1px solid #d9d9d9;
+  border-radius: 45px;
+  height: 90px;
+  width: 90px;
+  overflow: hidden;
+  img { width: 100% }
+}
+
+.name {
+  float: right !important;
+  background-color: inherit;
+  margin-left: 5px;
+  align-content: center;
+  margin: 10px;
 }
