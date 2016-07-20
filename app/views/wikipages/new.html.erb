@@ -12,8 +12,63 @@
   </div>
 
     <div class="col-md-8">
-      <%= render partial: 'form', locals: { wikipage: @wikipage } %>
+      <%= form_for @wikipage do |f| %>
+        <% if @wikipage.errors.any? %>
+          <div class ="alert alert-danger">
+            <h4><%= pluralize(@wikipage.errors.count, "error") %>.</h4>
+              <ul>
+                  <% @wikipage.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+              </ul>
+          </div>
+        <% end %>
+
+          <%= form_group_tag(@wikipage.errors[:title]) do %>
+            <div class="form-group">
+            <%= f.label :title %>
+            <%= f.text_field :title, class: 'form-control', placeholder: "Enter entry title" %>
+          <% end %>
+
+          <div class="form-group">
+            <%= f.label :body %>
+            <%= f.text_area :body, rows: 8, class: 'form-control', placeholder: "Enter entry body" %>
+          </div>
+          <% if current_user.admin? || current_user.premium? %>
+            <div class="form-group">
+                <%= f.check_box :public, {}, false, true%> Public
+            <% end %>
+            </div>
+          <p><%= f.submit "Save", class: 'btn btn-success' %></p>
+          <% if current_user.admin? || current_user.premium? %>
+            <div class="form-group">
+            <p><%= link_to "Delete Wiki", @wikipage, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure you want to delete this wiki?'} %></p>
+          <%end%>
+            </div>
     </div>
   </div>
+  <h4>Simple Markdown:</h4>
+  <table>
+    <tr>
+      <td> <i>Italics</i> </td>
+      <td> *asterisks* or _underscores_ </td>
+    </tr>
+    <tr>
+      <td> <b>Bold</b> </td>
+      <td> **two asterisks** or __two underscores__ </td>
+    </tr>
+    <tr>
+      <td> Paragraph break  &nbsp; &nbsp;  &nbsp;</td>
+      <td> &lt;br> </td>
+    </tr>
+    <tr>
+      <td> A <%= link_to "link", "http://daringfireball.net/projects/markdown/syntax", :title => "link name", :target =>"_blank" %> example.</td>
+      <td> A [link](http://www.example.com/ "link name") example.</td>
+    </tr>
+</table>
+<br>
+  <p><%= link_to "Click here for the complete markdown reference.", "http://daringfireball.net/projects/markdown/syntax", :target =>"_blank" %></p>
+<br>
 
   </div>
+<% end %>

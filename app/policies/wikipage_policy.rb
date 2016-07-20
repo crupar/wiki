@@ -9,20 +9,24 @@ class WikipagePolicy < ApplicationPolicy
       user.present? && (user.admin? || user.premium?)
   end
 
-
-
   def update?
     edit?
   end
 
   def edit?
-    (record.user -- user) || :record.collabarator.include?(user)
+    (record.user == user) || record.users.include?(user)
+  end
+
+  def create?
+    user.present?
+  end
+
+  def new?
+    create?
   end
 
   def destroy?
-    @wikipages = Wikipage.all
-    return true if record.public?
-    user.present? && (user.admin? || user.premium?)
+    user.admin?
   end
 
 

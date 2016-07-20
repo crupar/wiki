@@ -5,20 +5,23 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     @wikipages = FilterWikis.call(current_user.role)
-    #@wikipages, @alphaParams = Wikipage.alpha_paginate(params[:letter]){|wikipage| wikipage.title}
   end
 
   def show
     @wikipage = Wikipage.friendly.find(params[:id])
-    @collaborator = @wikipage.collaborator_users
+    @collaborator = @wikipage.users
   end
 
   def new
     @wikipage = Wikipage.new
+    authorize @wikipage
+
   end
 
   def create
      @wikipage = current_user.wikipages.new(wikipage_params)
+     authorize @wikipage
+
 
      if @wikipage.save
        flash[:notice] = "Entry was saved successfully."
@@ -29,10 +32,11 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
      end
    end
 
-
   def edit
     @wikipage = Wikipage.friendly.find(params[:id])
-    @users = User.where.not(id: current_user.id)
+    @users = User.where.not(id: current_user.id, role: 'standard')
+   authorize @wikipage
+
   #  @users, @alphaParams = User.all.alpha_paginate(params[:letter]){|user| user.username}
 
   end
@@ -40,6 +44,7 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   def update
     @wikipage = Wikipage.friendly.find(params[:id])
     @wikipage.assign_attributes(wikipage_params)
+    authorize @wikipage
 
     if @wikipage.save
       flash[:notice] = "Entry was updated successfully."
@@ -77,8 +82,6 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
     flash[:warning] = "You are not authorized to perform this action."
     redirect_to(request.referrer || root_path)
   end
-
-
 
 
 end

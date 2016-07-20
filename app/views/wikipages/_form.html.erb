@@ -32,6 +32,15 @@
       <p><%= link_to "Delete Wiki", @wikipage, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure you want to delete this wiki?'} %></p>
     <%end%>
       </div>
+
+
+  <% unless current_user.standard? %>
+        <h4>Add collaborators </h4>
+        <% @users.each do |user| %>
+            <%= check_box_tag "wikipage[user_ids][]", user.id, @wikipage.users.include?(user) %>
+            <%= label_tag dom_id(user), user.username %></li>
+        <% end %>
+      <% end %>
   <% end %>
 </div>
 </div>
