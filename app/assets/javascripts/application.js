@@ -13,5 +13,23 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require showdown
 //= require bootstrap
 //= require_tree .
+
+
+
+$(document).ready(function() {
+  var converter = new showdown.Converter();
+    $('#wikipage_title').on('keyup', function () {
+      var mdowntitle = $('#wikipage_title').val();
+      var html = converter.makeHtml(mdowntitle);
+      $('#wiki-preview-title').html(html);
+    });
+
+    $('#wikipage_body').on('keyup', function() {
+      var mdown = $('#wikipage_body').val();
+      var html = converter.makeHtml(mdown);
+      $('#wiki-preview-body').html(html);
+    });
+});
