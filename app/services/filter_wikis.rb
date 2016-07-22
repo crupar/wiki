@@ -12,5 +12,4 @@ class FilterWikis
     end
   end
 
-
 end

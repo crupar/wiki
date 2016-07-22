@@ -54,14 +54,12 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:first_name, :last_name, :email, :password)
     end
+
     def secure_params
       params.require(:user).permit(:role)
     end
 
     def respond_with_article_or_redirect
-      # If an old id or a numeric id was used to find the record, then
-      # the request path will not match the post_path, and we should do
-      # a 301 redirect that uses the current friendly id.
       if request.path != article_path(@article)
         return redirect_to @article, status: :moved_permanently
       else

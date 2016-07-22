@@ -5,8 +5,7 @@ def new
 end
 
 def create
-
-    @amount = 1500
+  @amount = 1500
 
   # Creates a Stripe Customer object, for associating with the charge
   customer = Stripe::Customer.create(

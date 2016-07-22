@@ -28,15 +28,12 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
        flash.now[:alert] = "There was an error saving the entry. Please try again."
        render :new
      end
-   end
+  end
 
   def edit
     @wikipage = Wikipage.friendly.find(params[:id])
     @users = User.where.not(id: current_user.id, role: 'standard')
-   authorize @wikipage
-
-  #  @users, @alphaParams = User.all.alpha_paginate(params[:letter]){|user| user.username}
-
+    authorize @wikipage
   end
 
   def update

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Wiki</title>
   <meta name="viewport" content="width=depth-width, initial-scale=1">
@@ -8,6 +9,7 @@
   <%= javascript_include_tag "https://js.stripe.com/v1/", "application" %>
   <%= csrf_meta_tags %>
 </head>
+
 <body>
   <div class="container">
     <ul class="nav nav-tabs">
@@ -15,20 +17,18 @@
       <li><%= link_to "Wikis", wikipages_path %></li>
       <li><%= link_to "About", about_path %></li>
 
-    <div class="pull-right user-info">
-      <% if user_signed_in? %>
-        Signed in as:
-        <div class="avatar">
-              <%= image_tag avatar_url(current_user) %>
-        </div>
-        <strong><%= current_user.username %></strong> |
-        <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> -
-        <%= link_to "Sign Out", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-      <% else %>
-        <%= link_to "Sign Up", new_user_registration_path, :class => 'navbar-link'  %> -
-        <%= link_to "Sign In", new_user_session_path, :class => 'navbar-link'  %>
-      <% end %>
-    </div>
+      <div class="pull-right user-info">
+        <% if user_signed_in? %>
+          Signed in as:
+          <div class="avatar"><%= image_tag avatar_url(current_user) %></div>
+          <strong><%= current_user.username %></strong> |
+          <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> -
+          <%= link_to "Sign Out", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+        <% else %>
+          <%= link_to "Sign Up", new_user_registration_path, :class => 'navbar-link'  %> -
+          <%= link_to "Sign In", new_user_session_path, :class => 'navbar-link'  %>
+        <% end %>
+      </div>
     </ul>
 
     <% if flash[:notice] %>

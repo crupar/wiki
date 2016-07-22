@@ -15,12 +15,12 @@
 </div>
 
 <div class="col-md-4">
-    <small> created <%= time_ago_in_words(@wikipage.created_at) %> ago by <%= @wikipage.user.username %></small>
-  </div>
+  <small> created <%= time_ago_in_words(@wikipage.created_at) %> ago by <%= @wikipage.user.username %></small>
+</div>
 <br>
-  <div class="col-md-12">
-    <% if current_user.admin? || current_user.premium? %>
-      <%= link_to "Edit", edit_wikipage_path(@wikipage), class: 'btn btn-success' %>
-    <% end %>
-  </div>
+
+<div class="col-md-12">
+  <% if current_user.admin? || current_user.premium? %>
+    <%= link_to "Edit", edit_wikipage_path(@wikipage), class: 'btn btn-success' %>
+  <% end %>
 </div>
