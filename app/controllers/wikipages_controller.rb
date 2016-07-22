@@ -15,13 +15,11 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   def new
     @wikipage = Wikipage.new
     authorize @wikipage
-
   end
 
   def create
      @wikipage = current_user.wikipages.new(wikipage_params)
      authorize @wikipage
-
 
      if @wikipage.save
        flash[:notice] = "Entry was saved successfully."
